@@ -5,8 +5,8 @@ import {boot} from "quasar/wrappers";
 import axios from "axios";
 import qs from "qs";
 import {Notify} from "quasar";
-import {BASE_BACK_URL, isUrlSelfServer} from "src/config";
-import {getNotNullParamData} from "src/util";
+import {BASE_BACK_URL} from "src/config";
+import {getNotNullParamData, isUrlSelfServer} from "src/util";
 import {useLoginUserStore} from "stores/login-user-store";
 
 const LoginUser = useLoginUserStore();

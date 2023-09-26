@@ -1,7 +1,6 @@
 import {useLoginUserStore} from "stores/login-user-store";
-import {date, useQuasar} from "quasar";
 
-const $q = useQuasar();
+import {Dark, date} from 'quasar'
 
 export function getNotNullParamData(data) {
   if (data == null) {
@@ -37,14 +36,14 @@ export function autoToDark() {
       expireDateTime = new Date(expireTime);
     let dateDiff = date.getDateDiff(expireDateTime, new Date(), "hour");
     if (dateDiff > 0) {
-      $q.dark.set(LoginUser.dark.status);
+      Dark.set(LoginUser.dark.status);
     }
     return;
   }
   const hour = new Date().getHours();
 
   if (hour < 7 || hour > 17) {
-    $q.dark.set(true);
+    Dark.set(true);
   }
 }
 
@@ -102,4 +101,8 @@ export function isEmptyObject(obj) {
 
 export function isEmptySequence(sequence) {
   return sequence == null || sequence.length === 0;
+}
+
+export function getNowTime() {
+  return new Date().toLocaleTimeString()
 }

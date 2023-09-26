@@ -2,16 +2,12 @@
   <div class="menu-item">
     <div v-for="(item,index) in itemList" :key="index">
       <div v-if="role+1>item.meta.role">
-        <q-item v-if="!item.children"
-                :key="index"
-                v-ripple
+        <q-item v-if="!item.children" :key="index"
+                v-ripple active-class="text-main text-bold"
                 :active="$route.path===item.path"
                 :inset-level="props.indentLevel"
-                :to="item.path"
-                active-class="text-main text-bold"
                 class="text-grey-8"
-                clickable
-        >
+                clickable @click="goRouteItem(item.name,item.meta.title,item.path)">
           <q-item-section>
             <div class="row items-center">
               <q-icon :name="item.meta.icon" class="q-ma-sm q-mr-md" size="sm"/>
@@ -31,8 +27,7 @@
                           expand-icon="chevron_left"
                           expanded-icon="expand_more"
                           @hide="closeMenu(item.name)"
-                          @show="openMenu(item.name)"
-        >
+                          @show="openMenu(item.name)">
           <template v-slot:header>
             <q-item-section>
               <div class="row items-center">
@@ -55,6 +50,7 @@
 </template>
 <script setup>
 import {useMenuOpenMapStore} from "stores/menu-open-map";
+import {useRouteTabListStore} from "stores/route-tab-list";
 
 
 const props = defineProps({
@@ -64,13 +60,17 @@ const props = defineProps({
 });
 
 const menuOpenMap = useMenuOpenMapStore();
-
+const routeTabListStore = useRouteTabListStore();
 function openMenu(name) {
   menuOpenMap.put(name, true);
 }
 
 function closeMenu(name) {
   menuOpenMap.put(name, false);
+}
+
+function goRouteItem(name, title, path) {
+  routeTabListStore.addTab(name, title, path)
 }
 </script>
 <style lang="sass" scoped>

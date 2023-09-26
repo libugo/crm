@@ -1,7 +1,5 @@
 import {defineStore} from "pinia";
-import {useQuasar} from "quasar";
 
-const $q = useQuasar()
 export const useMenuOpenMapStore = defineStore("menuOpenMap", {
   persist: true,
   state: () => ({

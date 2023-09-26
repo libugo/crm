@@ -1,9 +1,67 @@
+const business = [
+  {
+    name: 'business', path: '', component: () => import('pages/business/BusinessPage.vue'),
+    meta: {
+      title: "跟单预约"
+    }
+  },
+  {
+    name: 'bCustomer', path: 'customer', component: () => import('pages/business-customer/BCustomerPage.vue'),
+    meta: {
+      title: "客户跟单"
+    }
+  },
+  {
+    name: 'bRes', path: 'res', component: () => import('pages/business-res/BResPage.vue'),
+    meta: {
+      title: "中介跟单"
+    }
+  },
+]
+
 const routes = [
   {
     path: '/',
     component: () => import('layouts/MainLayout.vue'),
     children: [
-      {path: '', component: () => import('pages/IndexPage.vue')}
+      {
+        name: 'home', path: '', component: () => import('pages/IndexPage.vue'),
+        meta: {
+          title: "工作台"
+        }
+      },
+      {
+        name: 'user', path: 'user', component: () => import('pages/user/UserPage.vue'),
+        meta: {
+          title: "人员"
+        }
+      },
+      {
+        name: 'customer', path: 'customer', component: () => import('pages/customer/CustomerPage.vue'),
+        meta: {
+          title: "客户"
+        }
+      },
+
+      {
+        name: 'res', path: 'res', component: () => import('pages/res/ResPage.vue'),
+        meta: {
+          title: "中介"
+        }
+      },
+      {path: 'business', children: [...business]},
+      {
+        name: 'template', path: 'template', component: () => import('pages/template/templatePage.vue'),
+        meta: {
+          title: "话术"
+        }
+      },
+      {
+        name: 'system', path: 'system', component: () => import('pages/system/SystemSettingPage.vue'),
+        meta: {
+          title: "系统设置"
+        }
+      },
     ]
   },
 

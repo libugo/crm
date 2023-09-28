@@ -1,15 +1,16 @@
 <script setup>
 import {useRouteTabListStore} from "stores/route-tab-list";
-import {date} from "quasar"
+import {useRouter} from "vue-router";
+import {scroll} from 'quasar'
+import {nextTick} from "vue";
 
+const emit = defineEmits(['clearAllTab'])
+
+const router = useRouter()
 const routeTabListStore = useRouteTabListStore();
 
-function routeTabClose(name, timestamp) {
-  routeTabListStore.remove(name, timestamp);
-}
-
-function getFormatDatetimeByTimestamp(timestamp) {
-  return date.formatDate(timestamp, 'DD日 HH:mm:ss.SSS')
+function routeTabClose(id) {
+    routeTabListStore.remove(id);
 }
 
 function clearTabByName(name, id) {
@@ -17,13 +18,25 @@ function clearTabByName(name, id) {
 }
 
 function clearAllTab() {
-  routeTabListStore.init()
+    routeTabListStore.$reset()
+    emit('clearAllTab')
 }
+
+function stillScrollRight() {
+    nextTick(() => {
+        let breadCrumbs = document.getElementById('bread-crumbs')
+        let s = scroll.getScrollTarget(breadCrumbs)
+        scroll.setHorizontalScrollPosition(s, scroll.getScrollWidth(s))
+    })
+}
+
+routeTabListStore.$subscribe((mutation, state) => stillScrollRight())
+
 </script>
 
 <template>
-  <div class="q-mb-xs q-ma-xs bread-crumbs">
-    <q-btn-group v-for="item in routeTabListStore.list" :key="item.name"
+    <div id="bread-crumbs" class="scroll q-mb-xs q-ma-xs">
+        <q-btn-group v-for="item in routeTabListStore.list" :key="item.id"
                  class="tab-btn-group q-mr-xs" outline>
       <q-btn :color="$route.fullPath===item.path?'main':'grey'" :label="item.title" :to="item.path" outline/>
       <q-btn v-if="item.name!=='home'" :color="$route.fullPath===item.path?'main':'grey'"
@@ -47,7 +60,6 @@ function clearAllTab() {
 </template>
 
 <style lang="sass" scoped>
-.bread-crumbs
+#bread-crumbs
   white-space: nowrap
-  overflow-x: auto
 </style>

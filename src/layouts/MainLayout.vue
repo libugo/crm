@@ -21,7 +21,7 @@
           </q-tabs>
         </q-btn-dropdown>
       </q-toolbar>
-      <tab-list/>
+      <tab-list @clearAllTab="clearAliveCache"/>
     </q-header>
 
     <q-drawer v-model="mainLeftDrawer" elevated>
@@ -48,7 +48,7 @@
     </q-dialog>
     <q-dialog v-model="mainDialog.display" :maximized="true" persistent>
       <component :is="mainDialog.content" :default-data="mainDialog.data" class="flex flex-center"
-                 @closeMainDialog="closeMainDialog"/>
+                 @closeDialog="mainDialog.display=false"/>
     </q-dialog>
     <q-ajax-bar ref="bar" color="main" position="bottom" size="3px"/>
   </q-layout>
@@ -59,7 +59,7 @@
 import {useRouter} from "vue-router";
 import {useQuasar} from "quasar";
 import {useMenuOpenMapStore} from "stores/menu-open-map";
-import {reactive, ref} from "vue";
+import {nextTick, reactive, ref} from "vue";
 import {useLoginUserStore} from "stores/login-user-store";
 import MenuList from "components/menu/MenuList.vue";
 import PageDragFab from "components/PageDragFab.vue";
@@ -142,6 +142,14 @@ function flushRoute() {
     nextTick(()=>{
       routeViewAlive.value=true
     })*/
+}
+
+function clearAliveCache() {
+  routeViewAlive.value = false
+  nextTick(() => {
+    routeViewAlive.value = true
+    router.push("/")
+  })
 }
 
 /*else if (LoginUser.role === 0) {

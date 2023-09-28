@@ -1,5 +1,5 @@
 <template>
-  <div class="menu-item">
+    <div class="menu-item non-selectable">
     <div v-for="(item,index) in itemList" :key="index">
       <div v-if="role+1>item.meta.role">
         <q-item v-if="!item.children" :key="index"

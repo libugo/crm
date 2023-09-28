@@ -12,11 +12,11 @@ export const useRouteTabListStore = defineStore("routeTabList", {
   getters: {},
 
   actions: {
-    init() {
-      this.list = [{id: 'home', name: "home", title: "工作台", path: "/"}]
-      Router.push("/")
-    },
     addTab(name, title, path) {
+        if (name === 'home') {
+            Router.push(path)
+            return
+        }
       let list = this.list, length = list.length, id = nanoid(10);
       for (let i = 0; i < length; i++) {
         if (list[i].id === id) {
@@ -39,11 +39,9 @@ export const useRouteTabListStore = defineStore("routeTabList", {
       }
     },
     removeByName(name, id) {
-      let list = this.list, length = list.length;
-      for (let i = 0; i < length; i++) {
-        if (list[i].name === name && list[i].id !== id) {
-          list.splice(i, 1);
-          i = i - 1
+        for (let i = 0; i < this.list.length; i++) {
+            if (this.list[i].name === name && this.list[i].id !== id) {
+                this.list.splice(i--, 1);
         }
       }
     }

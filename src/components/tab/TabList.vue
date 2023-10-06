@@ -30,8 +30,8 @@ function stillScrollRight() {
     })
 }
 
-function flushPage() {
-  router.go(0)
+function flushPage(name, id) {
+  routeTabListStore.flushTabByNameAndId(name, id)
 }
 
 routeTabListStore.$subscribe((mutation, state) => stillScrollRight())

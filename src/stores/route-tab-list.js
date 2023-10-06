@@ -13,21 +13,51 @@ export const useRouteTabListStore = defineStore("routeTabList", {
   getters: {},
 
   actions: {
-    addTab(name, title, path) {
-      if (name === 'home') {
-        Router.push(path)
-        return
-      }
-      let list = this.list, length = list.length, id = nanoid(10);
+    getDifferentId() {
+      let list = this.list, length = list.length, id = nanoid(10)
       for (let i = 0; i < length; i++) {
         if (list[i].id === id) {
           id = nanoid(10)
           i = 0
         }
       }
+      return id
+    },
+    addTab(name, title, path) {
+      if (name === 'home') {
+        Router.push(path)
+        return
+      }
+
+      let id = this.getDifferentId();
       path = path + "?id=" + id
+
       this.list.push({id, name, title, path, datetime: getNowTime()})
       Router.push(path)
+    },
+    /**
+     * todo 实际缓存没刷新，可能会导致性能问题
+     * @param name
+     * @param index
+     */
+    flushTabByIndex(name, index) {
+      let id = this.getDifferentId();
+      let path = name + "?id=" + id
+
+      this.list[index].id = id;
+      this.list[index].path = path;
+      this.list[index].datetime = getNowTime()
+
+      Router.push(path)
+    },
+    flushTabByNameAndId(name, id) {
+      let list = this.list
+      for (let i = 0; i < list.length; i++) {
+        if (list[i].name === name && list[i].id === id) {
+          this.flushTabByIndex(name, i)
+          return
+        }
+      }
     },
     remove(id) {
       let list = this.list, length = list.length;

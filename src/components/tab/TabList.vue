@@ -52,7 +52,7 @@ routeTabListStore.$subscribe((mutation, state) => stillScrollRight())
       <q-popup-proxy context-menu>
         <q-list v-close-popup>
           <q-item v-if="$route.name!=='home' && $route.fullPath===item.path" v-ripple clickable>
-            <q-item-section @click="flushPage">重载页面</q-item-section>
+            <q-item-section @click="flushPage(item.name,item.id)">重载页面</q-item-section>
           </q-item>
           <q-item v-if="$route.name!=='home' && $route.fullPath===item.path" v-ripple clickable>
             <q-item-section @click="clearTabByName(item.name,item.id)">关闭重复</q-item-section>

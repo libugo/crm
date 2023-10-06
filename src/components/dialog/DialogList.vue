@@ -1,7 +1,7 @@
 <script setup>
 
 
-import {reactive, ref} from "vue";
+import {markRaw, reactive, ref} from "vue";
 
 const dialogList = reactive([]), dragDialogAble = ref(false)
 
@@ -35,7 +35,7 @@ function addDialog(key, componentFileName, data, oneSame = true) {
   import(`../dynamicImport/${componentFileName}.vue`).then((module) => {
     let dialog = {
       key,
-      component: module.default,
+      component: markRaw(module.default),
       //方便在调节窗口后，新建模态框能保持中心
       top: window.innerHeight / 2.5 + dialogList.length * 10,
       left: window.innerWidth / 2.5,

@@ -7,7 +7,9 @@ import {useSystemSettingStoreStore} from "stores/system-setting-store";
 const prop = defineProps(['index', 'defaultData'])
 const emit = defineEmits(['moveDialog', 'closeDialog'])
 
-const color = ref()
+const systemStore = useSystemSettingStoreStore()
+
+const color = ref(systemStore.primary)
 
 function moveFab(ev) {
   emit('moveDialog', ev, prop.index)
@@ -18,7 +20,6 @@ function closeDialog() {
 }
 
 function changeSystemColor(val) {
-  const systemStore = useSystemSettingStoreStore()
   systemStore.set(val)
 }
 </script>

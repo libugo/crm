@@ -66,23 +66,23 @@ let fullFilterControl = reactive({
   <q-page class="business-page normal-page">
     <div class="table-header q-mb-md row items-center">
       <div class="col q-gutter-sm">
-          <q-icon color="main" name="follow_the_signs" size="md"/>
-          <q-btn class="bg-main text-white" icon-right="add" label="上传" @click="addData"/>
+        <q-icon color="primary" name="follow_the_signs" size="md"/>
+        <q-btn color="primary" icon-right="add" label="上传" @click="addData"/>
           <!--        <q-btn v-if="selected.length>0" color="negative" icon-right="delete_forever" label="删除所选"
                          @click="delSelectedRow" />-->
       </div>
         <div class="col-auto q-gutter-sm text-right">
-            <q-btn class="text-main" dense icon-right="sync" outline @click="getTableRows()">
+          <q-btn color="primary" dense icon-right="sync" outline @click="getTableRows()">
                 <q-tooltip :offset="[10, 10]" anchor="top middle" self="bottom middle">刷新</q-tooltip>
             </q-btn>
-            <q-btn class="text-main" dense icon-right="filter_alt" outline
+          <q-btn color="primary" dense icon-right="filter_alt" outline
                    @click="fullFilterControl.status=!fullFilterControl.status">
                 <q-tooltip :offset="[10, 10]" anchor="top middle" self="bottom middle">高级筛选</q-tooltip>
             </q-btn>
       </div>
     </div>
       <div v-if="!fullFilterControl.status" class="q-gutter-sm">
-          <q-input v-model="simpleFilterControl.search" color="main" debounce="300" dense
+        <q-input v-model="simpleFilterControl.search" color="primary" debounce="300" dense
                    label="搜索" outlined
                    rounded
                    @update:model-value="getTableRows()">
@@ -102,11 +102,11 @@ let fullFilterControl = reactive({
                             :options="[{label: '全部', value: null},{label: '未阅读', value: false},{label: '已阅读', value: true}]"
                             dense
                             push
-                            toggle-color="main"
+                            toggle-color="primary"
               />
           </q-card-section>
           <q-card-actions>
-              <q-btn color="main" label="搜索" @click="getTableRows()"/>
+            <q-btn color="primary" label="搜索" @click="getTableRows()"/>
           </q-card-actions>
       </q-card>
     <q-table
@@ -124,10 +124,10 @@ let fullFilterControl = reactive({
       <template #body-cell-control="props">
         <q-td :auto-width="true" :props="props" class="q-gutter-xs">
           <q-btn color="warning" dense glossy icon="edit" push @click="editLead(props.row)">
-            <q-tooltip>编辑广告</q-tooltip>
+
           </q-btn>
           <q-btn color="negative" dense glossy icon="delete" push @click="delLead(props.row.leadId)">
-            <q-tooltip>删除广告</q-tooltip>
+
           </q-btn>
         </q-td>
       </template>

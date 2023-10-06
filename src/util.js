@@ -1,6 +1,7 @@
 import {useLoginUserStore} from "stores/login-user-store";
 
 import {Dark, date} from 'quasar'
+import {useRouteTabListStore} from "stores/route-tab-list";
 
 export function getNotNullParamData(data) {
   if (data == null) {
@@ -105,4 +106,14 @@ export function isEmptySequence(sequence) {
 
 export function getNowTime() {
   return new Date().toLocaleTimeString()
+}
+
+export function goRouteItem(name, title, path) {
+  const routeTabListStore = useRouteTabListStore();
+  routeTabListStore.addTab(name, title, path)
+}
+
+export function switchTabByName(name, title, path, left) {
+  const routeTabListStore = useRouteTabListStore();
+  routeTabListStore.switchTabByName(name, title, path, left)
 }

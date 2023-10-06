@@ -37,7 +37,7 @@
             </q-input>
             <div class="q-pt-xs text-grey-4 text-right">
               <q-chip clickable
-                      color="main" icon="badge"
+                      color="primary" icon="badge"
                       size="md" square text-color="white" @click="submitForm">{{ adminMode ? "管理员" : "" }}登录
               </q-chip>
             </div>

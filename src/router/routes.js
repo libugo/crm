@@ -19,30 +19,39 @@ const business = [
   },
 ]
 
+const customer = [
+  {
+    name: 'customer', path: '', component: () => import('pages/customer/CustomerPage.vue'),
+    meta: {
+      title: "客户"
+    }
+  },
+  {
+    name: 'addCustomer', path: 'add', component: () => import('pages/customer/AddCustomerPage.vue'),
+    meta: {
+      title: "客户登记"
+    }
+  },
+]
+
 const routes = [
   {
     path: '/',
     component: () => import('layouts/MainLayout.vue'),
     children: [
       {
-        name: 'home', path: '', component: () => import('pages/IndexPage.vue'),
+        name: 'home', path: '', component: () => import('pages/business/BusinessPage.vue'),
         meta: {
           title: "工作台"
         }
       },
-      {
-        name: 'user', path: 'user', component: () => import('pages/user/UserPage.vue'),
-        meta: {
-          title: "人员"
-        }
-      },
-      {
-        name: 'customer', path: 'customer', component: () => import('pages/customer/CustomerPage.vue'),
-        meta: {
-          title: "客户"
-        }
-      },
-
+      /*      {
+              name: 'user', path: 'user', component: () => import('pages/user/UserPage.vue'),
+              meta: {
+                title: "人员"
+              }
+            },*/
+      {path: 'customer', children: [...customer]},
       {
         name: 'res', path: 'res', component: () => import('pages/res/ResPage.vue'),
         meta: {

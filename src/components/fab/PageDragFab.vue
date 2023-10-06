@@ -14,8 +14,8 @@ function moveFab(ev) {
 
 <template>
   <q-page-sticky :offset="fabPos" position="bottom-right" style="z-index: 10000">
-    <q-fab v-touch-pan.prevent.mouse="moveFab" color="main" direction="up"
-           icon="keyboard_arrow_up">
+    <q-fab v-touch-pan.prevent.mouse="moveFab"
+           color="primary" direction="up" icon="home_repair_service" padding="md">
       <slot/>
     </q-fab>
   </q-page-sticky>

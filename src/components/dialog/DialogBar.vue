@@ -1,6 +1,6 @@
 <template>
   <div class="dialog-bar ">
-    <q-bar class="row bg-main text-white shadow-4 non-selectable">
+    <q-bar class="row bg-primary text-white shadow-4 non-selectable">
       <div class="col">
         <div v-if="props.title!=null">
           {{ title }}

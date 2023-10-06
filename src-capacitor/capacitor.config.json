@@ -1,0 +1,10 @@
+{
+  "appId": "cn.libug.carming.crm",
+  "appName": "车小明-客户管理系统",
+  "bundledWebRuntime": false,
+  "npmClient": "yarn",
+  "webDir": "www",
+  "server": {
+    "androidScheme": "https"
+  }
+}

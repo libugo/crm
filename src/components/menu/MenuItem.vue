@@ -3,11 +3,16 @@
     <div v-for="(item,index) in itemList" :key="index">
       <div v-if="role+1>item.meta.role">
         <q-item v-if="!item.children" :key="index"
-                v-ripple active-class="text-main text-bold"
+                v-ripple :class="{'text-grey-8':$route.path!==item.path}"
                 :active="$route.path===item.path"
                 :inset-level="props.indentLevel"
-                class="text-grey-8"
-                clickable @click="goRouteItem(item.name,item.meta.title,item.path)">
+                active-class="text-primary text-bold"
+                clickable
+                @click.prevent.left="
+                $q.platform.is.mobile?goRouteItem(item.name,item.meta.title,item.path):
+                switchTabByName(item.name,item.meta.title,item.path)"
+                @click.prevent.middle="goRouteItem(item.name,item.meta.title,item.path)"
+                @click.prevent.right="switchTabByName(item.name,item.meta.title,item.path,false)">
           <q-item-section>
             <div class="row items-center">
               <q-icon :name="item.meta.icon" class="q-ma-sm q-mr-md" size="sm"/>
@@ -50,7 +55,7 @@
 </template>
 <script setup>
 import {useMenuOpenMapStore} from "stores/menu-open-map";
-import {useRouteTabListStore} from "stores/route-tab-list";
+import {goRouteItem, switchTabByName} from "src/util";
 
 
 const props = defineProps({
@@ -60,7 +65,6 @@ const props = defineProps({
 });
 
 const menuOpenMap = useMenuOpenMapStore();
-const routeTabListStore = useRouteTabListStore();
 function openMenu(name) {
   menuOpenMap.put(name, true);
 }
@@ -69,9 +73,6 @@ function closeMenu(name) {
   menuOpenMap.put(name, false);
 }
 
-function goRouteItem(name, title, path) {
-  routeTabListStore.addTab(name, title, path)
-}
 </script>
 <style lang="sass" scoped>
 .menu-item

@@ -30,6 +30,10 @@ function stillScrollRight() {
     })
 }
 
+function flushPage() {
+  router.go(0)
+}
+
 routeTabListStore.$subscribe((mutation, state) => stillScrollRight())
 
 </script>
@@ -38,8 +42,8 @@ routeTabListStore.$subscribe((mutation, state) => stillScrollRight())
     <div id="bread-crumbs" class="scroll q-mb-xs q-ma-xs">
         <q-btn-group v-for="item in routeTabListStore.list" :key="item.id"
                  class="tab-btn-group q-mr-xs" outline>
-      <q-btn :color="$route.fullPath===item.path?'main':'grey'" :label="item.title" :to="item.path" outline/>
-      <q-btn v-if="item.name!=='home'" :color="$route.fullPath===item.path?'main':'grey'"
+          <q-btn :color="$route.fullPath===item.path?'primary':'grey'" :label="item.title" :to="item.path" outline/>
+          <q-btn v-if="item.name!=='home'" :color="$route.fullPath===item.path?'primary':'grey'"
              dense icon="close" outline size="sm"
              @click="routeTabClose(item.id)"/>
       <q-tooltip v-if="item.name!=='home'" :offset="[10, 10]" anchor="top middle" self="bottom middle">
@@ -47,6 +51,9 @@ routeTabListStore.$subscribe((mutation, state) => stillScrollRight())
       </q-tooltip>
       <q-popup-proxy context-menu>
         <q-list v-close-popup>
+          <q-item v-if="$route.name!=='home' && $route.fullPath===item.path" v-ripple clickable>
+            <q-item-section @click="flushPage">重载页面</q-item-section>
+          </q-item>
           <q-item v-if="$route.name!=='home' && $route.fullPath===item.path" v-ripple clickable>
             <q-item-section @click="clearTabByName(item.name,item.id)">关闭重复</q-item-section>
           </q-item>

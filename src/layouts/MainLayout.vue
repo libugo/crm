@@ -11,7 +11,7 @@
         </q-input>
         <q-space/>
         <q-btn v-if="LoginUser.user==null" class="bg-red text-white" label="已离线" @click="needLogin()"/>
-        <q-btn-dropdown v-else :label="LoginUser.user" color="main" icon="account_circle" no-caps outline>
+        <q-btn-dropdown v-else :label="LoginUser.user" color="primary" icon="account_circle" no-caps outline>
           <q-tabs vertical>
             <q-tab v-if="!LoginUser.adminLogin" v-close-popup @click="displayUserInfo">
               <div>个人设置</div>
@@ -25,7 +25,7 @@
     </q-header>
 
     <q-drawer v-model="mainLeftDrawer" elevated>
-      <menu-list @menuClick="flushRoute"/>
+      <menu-list/>
     </q-drawer>
 
     <q-page-container class="bg-light-main full-width full-height">
@@ -36,12 +36,7 @@
           </keep-alive>
         </transition>
       </router-view>
-      <page-drag-fab>
-        <q-fab-action color="primary" icon="person" label="客户登记" @click="onClick"/>
-        <q-fab-action color="primary" icon="real_estate_agent" label="中介登记" @click="onClick"/>
-        <q-fab-action color="primary" icon="attach_money" label="生意跟单" @click="onClick"/>
-        <q-fab-action color="primary" icon="key" label="创建话术" @click="onClick"/>
-      </page-drag-fab>
+      <fab-wheel-menu/>
     </q-page-container>
     <q-dialog v-model="loginDialogDisplay" maximized>
       <!--      <LoginPage @login-success="loginSuccess" @close-login-page="closeLoginPage" />-->
@@ -50,7 +45,7 @@
       <component :is="mainDialog.content" :default-data="mainDialog.data" class="flex flex-center"
                  @closeDialog="mainDialog.display=false"/>
     </q-dialog>
-    <q-ajax-bar ref="bar" color="main" position="bottom" size="3px"/>
+    <q-ajax-bar ref="bar" color="primary" position="bottom" size="3px"/>
   </q-layout>
 </template>
 
@@ -59,11 +54,12 @@
 import {useRouter} from "vue-router";
 import {useQuasar} from "quasar";
 import {useMenuOpenMapStore} from "stores/menu-open-map";
-import {nextTick, reactive, ref} from "vue";
+import {nextTick, onBeforeMount, reactive, ref} from "vue";
 import {useLoginUserStore} from "stores/login-user-store";
 import MenuList from "components/menu/MenuList.vue";
-import PageDragFab from "components/PageDragFab.vue";
 import TabList from "components/tab/TabList.vue";
+import FabWheelMenu from "components/fab/FabWheelMenu.vue";
+import {useSystemSettingStoreStore} from "stores/system-setting-store";
 
 const $q = useQuasar();
 const router = useRouter();
@@ -120,8 +116,8 @@ function closeLoginPage() {
 }
 
 function leftDrawerControl() {
-  menuOpenMapStore.inverse("mainLeftDrawer");
   mainLeftDrawer.value = !mainLeftDrawer.value;
+  menuOpenMapStore.put("mainLeftDrawer", mainLeftDrawer.value);
 }
 
 function logOut() {
@@ -137,13 +133,6 @@ function initMenu() {
   menuOpenMapStore.put("mainLeftDrawer", !($q.platform.is.mobile))
 }
 
-function flushRoute() {
-  /*  routeViewAlive.value=false
-    nextTick(()=>{
-      routeViewAlive.value=true
-    })*/
-}
-
 function clearAliveCache() {
   routeViewAlive.value = false
   nextTick(() => {
@@ -151,6 +140,11 @@ function clearAliveCache() {
     router.push("/")
   })
 }
+
+onBeforeMount(() => {
+  const systemStore = useSystemSettingStoreStore()
+  systemStore.updateSystemColor()
+})
 
 /*else if (LoginUser.role === 0) {
   getUserBalance();

@@ -2,6 +2,7 @@
 
 import {reactive, ref} from "vue";
 import {useQuasar} from "quasar";
+import DialogList from "components/dialog/DialogList.vue";
 
 const $q = useQuasar()
 
@@ -30,7 +31,7 @@ const columns = [
     descending: false
   })
 
-const dialogList = reactive([])
+const dialogList = ref()
 
 /**
  * @deprecated 使用动态组件列表代替
@@ -65,8 +66,6 @@ const fullFilterControl = reactive({
   ban: null
 });
 
-const dragDialogAble = ref(false)
-
 function simpleT4() {
   $q.notify("点击后弹窗详细显示相关信息")
 }
@@ -78,22 +77,15 @@ function simpleT4() {
 }*/
 
 function viewDetail(userId) {
-  import('components/user/UserDetailView.vue').then((module) => {
-    let dialog = {
-      component: module.default,
-      //方便在调节窗口后，新建模态框能保持中心
-      top: window.innerHeight / 2.5 + dialogList.length * 10,
-      left: window.innerWidth / 2.5,
-      data: userId
-    }
-    dialogList.push(dialog)
-  })
+  dialogList.value.addDialog('userDetail', 'UserDetailView', userId)
 }
 
-function moveDialog(ev, index) {
-  dragDialogAble.value = ev.isFirst !== true && ev.isFinal !== true
-  dialogList[index].top = dialogList[index].top + ev.delta.y
-  dialogList[index].left = dialogList[index].left + ev.delta.x
+function viewIdCard(userId) {
+  dialogList.value.addDialog('UserIdCard', 'UserIdCardView', userId)
+}
+
+function viewContact(userId) {
+  dialogList.value.addDialog('UserContact', 'UserContactView', userId)
 }
 </script>
 
@@ -101,23 +93,23 @@ function moveDialog(ev, index) {
   <q-page class="user-page normal-page">
     <div class="table-header q-mb-md row items-center">
       <div class="col q-gutter-sm">
-        <q-icon color="main" name="follow_the_signs" size="md"/>
-        <q-btn class="bg-main text-white" icon-right="add" label="上传" @click="addData"/>
+        <q-icon color="primary" name="follow_the_signs" size="md"/>
+        <q-btn color="primary" icon-right="add" label="上传" @click="addData"/>
         <!--        <q-btn v-if="selected.length>0" color="negative" icon-right="delete_forever" label="删除所选"
                        @click="delSelectedRow" />-->
       </div>
       <div class="col-auto q-gutter-sm text-right">
-        <q-btn class="text-main" dense icon-right="sync" outline @click="getTableRows()">
+        <q-btn color="primary" dense icon-right="sync" outline @click="getTableRows()">
           <q-tooltip :offset="[10, 10]" anchor="top middle" self="bottom middle">刷新</q-tooltip>
         </q-btn>
-        <q-btn class="text-main" dense icon-right="filter_alt" outline
+        <q-btn color="primary" dense icon-right="filter_alt" outline
                @click="fullFilterControl.status=!fullFilterControl.status">
           <q-tooltip :offset="[10, 10]" anchor="top middle" self="bottom middle">高级筛选</q-tooltip>
         </q-btn>
       </div>
     </div>
     <div v-if="!fullFilterControl.status" class="q-gutter-sm">
-      <q-input v-model="simpleFilterControl.search" color="main" debounce="300" dense
+      <q-input v-model="simpleFilterControl.search" color="primary" debounce="300" dense
                label="搜索" outlined
                rounded
                @update:model-value="getTableRows()">
@@ -140,7 +132,7 @@ function moveDialog(ev, index) {
               <q-input v-model="fullFilterControl.userId" clearable dense label="用户id" outlined/>
               <q-btn-toggle v-model="fullFilterControl.readStatus"
                             :options="[{label: '全部', value: null},{label: '客户', value: 0},{label: 'VIP', value: 1},{label: '机密', value: 2}]"
-                            push toggle-color="main"/>
+                            push toggle-color="primary"/>
               <q-input v-model="fullFilterControl.character" clearable dense label="性格特点" outlined/>
             </div>
           </q-card-section>
@@ -156,7 +148,7 @@ function moveDialog(ev, index) {
               <q-input v-model="fullFilterControl.userId" clearable dense label="姓名" outlined/>
               <q-btn-toggle v-model="fullFilterControl.readStatus"
                             :options="[{label: '全部', value: null},{label: '男', value: false},{label: '女', value: true}]"
-                            push toggle-color="main"/>
+                            push toggle-color="primary"/>
               <q-input v-model="fullFilterControl.character" clearable dense label="民族" outlined/>
               <q-input v-model="fullFilterControl.character" clearable dense label="号码" outlined/>
               <q-input v-model="fullFilterControl.character" clearable dense label="出生年月日" outlined/>
@@ -174,7 +166,7 @@ function moveDialog(ev, index) {
             <div class="q-gutter-sm row">
               <q-btn-toggle v-model="fullFilterControl.readStatus"
                             :options="[{label: '全部', value: null},{label: 'QQ', value: 0},{label: '微信', value: 1},{label: '手机号', value: 2}]"
-                            push toggle-color="main"/>
+                            push toggle-color="primary"/>
               <q-input v-model="fullFilterControl.character" clearable dense label="内容" outlined/>
               <q-input v-model="fullFilterControl.character" clearable dense label="备注" outlined/>
             </div>
@@ -182,7 +174,7 @@ function moveDialog(ev, index) {
         </q-card>
       </q-card-section>
       <q-card-actions>
-        <q-btn color="main" label="搜索" @click="getTableRows()"/>
+        <q-btn color="primary" label="搜索" @click="getTableRows()"/>
       </q-card-actions>
     </q-card>
     <q-table
@@ -203,16 +195,16 @@ function moveDialog(ev, index) {
             <q-tooltip>详情</q-tooltip>
           </q-btn>
           <q-btn color="warning" dense glossy icon="edit" push @click="editLead(props.row)">
-            <q-tooltip>编辑广告</q-tooltip>
+
           </q-btn>
           <q-btn color="negative" dense glossy icon="delete" push @click="delLead(props.row.leadId)">
-            <q-tooltip>删除广告</q-tooltip>
+
           </q-btn>
         </q-td>
       </template>
       <template #body-cell-idNumber="props">
         <q-td :auto-width="true" :props="props" class="q-gutter-xs">
-          <q-btn color="primary" dense glossy icon="badge" push @click="simpleT4">
+          <q-btn color="primary" dense glossy icon="badge" push @click="viewIdCard(props.row.userId)">
             <q-tooltip>
               <q-card>
                 <q-card-section class="text-black">
@@ -234,7 +226,7 @@ function moveDialog(ev, index) {
       </template>
       <template #body-cell-contact="props">
         <q-td :auto-width="true" :props="props" class="q-gutter-xs">
-          <q-btn color="warning" dense glossy icon="contacts" push @click="simpleT4">
+          <q-btn color="warning" dense glossy icon="contacts" push @click="viewContact(props.row.userId)">
             <q-tooltip>
               <q-card>
                 <q-card-section class="text-black">
@@ -258,16 +250,7 @@ function moveDialog(ev, index) {
         </q-td>
       </template>
     </q-table>
-    <div v-for="(item,index) in dialogList" :key="index"
-         :style="{top:item.top+'px',left:item.left+'px'}"
-         class="absolute-center">
-      <component :is="item.component"
-                 :default-data="item.data"
-                 :index="index"
-                 class="flex flex-center"
-                 @closeDialog="dialogList.splice(index,1)"
-                 @moveDialog="moveDialog"/>
-    </div>
+    <dialog-list ref="dialogList"/>
   </q-page>
 </template>
 

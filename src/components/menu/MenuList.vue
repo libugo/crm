@@ -2,9 +2,8 @@
   <div class="menu-list">
     <q-list class="text-primary">
       <menu-item
-        :item-list="menuListData"
+        :item-list="verticalMenuListData"
         :indent-level="0"
-        @click="emit('menuClick')"
         :role="role"/>
     </q-list>
   </div>
@@ -13,9 +12,7 @@
 import MenuItem from "components/menu/MenuItem.vue";
 import {useLoginUserStore} from "stores/login-user-store";
 import {computed} from "vue";
-import {menuListData} from "src/config";
-
-const emit = defineEmits(['menuClick'])
+import {verticalMenuListData} from "src/config";
 
 const LoginUser = useLoginUserStore();
 const role = computed(() => LoginUser.role);

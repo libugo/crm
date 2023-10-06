@@ -1,9 +1,18 @@
 // app global css in SCSS form
 @import "quasar.variables";
 
-.text-main {
+/*.text-main {
   color: $main !important;
 }
+
+.bg-main {
+  background: $main !important;
+}
+
+//表格加载进度条
+.q-table__progress .q-linear-progress {
+  color: $main !important;
+}*/
 
 .text-goldenrod {
   color: $goldenrod !important;
@@ -11,10 +20,6 @@
 
 .bg-goldenrod {
   background: $goldenrod !important;
-}
-
-.bg-main {
-  background: $main !important;
 }
 
 .bg-light-main {
@@ -28,12 +33,6 @@
 .normal-page {
   padding: 15px;
 }
-
-//表格加载进度条
-.q-table__progress .q-linear-progress {
-  color: $main !important;
-}
-
 
 .ad-table-header {
   background: rgb(236, 236, 241)
@@ -59,6 +58,11 @@
 
 .preview {
   background-image: repeating-linear-gradient(45deg, hsl(0 0% 100%), hsl(0 0% 100%) 13px, hsl(0 0% 95%) 13px, hsl(0 0% 95%) 14px);
+}
+
+
+.rotate360 {
+  animation: rotate 0.5s linear infinite
 }
 
 @keyframes rotate {

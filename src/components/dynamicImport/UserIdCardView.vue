@@ -15,17 +15,16 @@ function closeDialog() {
 </script>
 
 <template>
-  <div class="user-detail-view">
+  <div class="user-id-card-view">
     <q-card>
       <dialog-bar :id="prop.defaultData"
                   v-touch-pan.prevent.mouse="moveFab"
                   :index="prop.index"
                   class="cursor-pointer"
                   entity="人员"
-                  module="详情信息"
+                  module="身份证信息"
                   @closeDialog="closeDialog"/>
       <q-card-section>
-
       </q-card-section>
     </q-card>
   </div>

@@ -2,6 +2,7 @@
 
 import {reactive, ref} from "vue";
 import {useQuasar} from "quasar";
+import TableControl from "components/TableControl.vue";
 
 const $q = useQuasar()
 
@@ -64,53 +65,9 @@ let fullFilterControl = reactive({
 
 <template>
   <q-page class="business-page normal-page">
-    <div class="table-header q-mb-md row items-center">
-      <div class="col q-gutter-sm">
-        <q-icon color="primary" name="follow_the_signs" size="md"/>
-        <q-btn color="primary" icon-right="add" label="上传" @click="addData"/>
-          <!--        <q-btn v-if="selected.length>0" color="negative" icon-right="delete_forever" label="删除所选"
-                         @click="delSelectedRow" />-->
-      </div>
-        <div class="col-auto q-gutter-sm text-right">
-          <q-btn color="primary" dense icon-right="sync" outline @click="getTableRows()">
-                <q-tooltip :offset="[10, 10]" anchor="top middle" self="bottom middle">刷新</q-tooltip>
-            </q-btn>
-          <q-btn color="primary" dense icon-right="filter_alt" outline
-                   @click="fullFilterControl.status=!fullFilterControl.status">
-                <q-tooltip :offset="[10, 10]" anchor="top middle" self="bottom middle">高级筛选</q-tooltip>
-            </q-btn>
-      </div>
-    </div>
-      <div v-if="!fullFilterControl.status" class="q-gutter-sm">
-        <q-input v-model="simpleFilterControl.search" color="primary" debounce="300" dense
-                   label="搜索" outlined
-                   rounded
-                   @update:model-value="getTableRows()">
-              <template v-slot:prepend>
-                  <q-icon dense flat name="search"/>
-              </template>
-              <template v-slot:append>
-                  <q-btn :style="{visibility:filter?'visible':'hidden'}" dense flat icon="clear" @click="filter=''"/>
-              </template>
-          </q-input>
-      </div>
-      <q-card v-if="fullFilterControl.status" class="q-mb-md">
-          <q-card-section class="q-gutter-sm">
-              <q-input v-model="fullFilterControl.img" clearable dense label="图片名" outlined/>
-              <q-input v-model="fullFilterControl.text" clearable dense label="文字包含" outlined/>
-              <q-btn-toggle v-model="fullFilterControl.readStatus"
-                            :options="[{label: '全部', value: null},{label: '未阅读', value: false},{label: '已阅读', value: true}]"
-                            dense
-                            push
-                            toggle-color="primary"
-              />
-          </q-card-section>
-          <q-card-actions>
-            <q-btn color="primary" label="搜索" @click="getTableRows()"/>
-          </q-card-actions>
-      </q-card>
+    <table-control>
+    </table-control>
     <q-table
-            class="q-mt-sm"
       v-model:pagination="pagination"
       v-model:selected.sync="selected"
       :columns="columns"

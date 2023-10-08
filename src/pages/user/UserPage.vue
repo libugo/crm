@@ -3,6 +3,7 @@
 import {reactive, ref} from "vue";
 import {useQuasar} from "quasar";
 import DialogList from "components/dialog/DialogList.vue";
+import TableControl from "components/TableControl.vue";
 
 const $q = useQuasar()
 
@@ -91,92 +92,8 @@ function viewContact(userId) {
 
 <template>
   <q-page class="user-page normal-page">
-    <div class="table-header q-mb-md row items-center">
-      <div class="col q-gutter-sm">
-        <q-icon color="primary" name="follow_the_signs" size="md"/>
-        <q-btn color="primary" icon-right="add" label="上传" @click="addData"/>
-        <!--        <q-btn v-if="selected.length>0" color="negative" icon-right="delete_forever" label="删除所选"
-                       @click="delSelectedRow" />-->
-      </div>
-      <div class="col-auto q-gutter-sm text-right">
-        <q-btn color="primary" dense icon-right="sync" outline @click="getTableRows()">
-          <q-tooltip :offset="[10, 10]" anchor="top middle" self="bottom middle">刷新</q-tooltip>
-        </q-btn>
-        <q-btn color="primary" dense icon-right="filter_alt" outline
-               @click="fullFilterControl.status=!fullFilterControl.status">
-          <q-tooltip :offset="[10, 10]" anchor="top middle" self="bottom middle">高级筛选</q-tooltip>
-        </q-btn>
-      </div>
-    </div>
-    <div v-if="!fullFilterControl.status" class="q-gutter-sm">
-      <q-input v-model="simpleFilterControl.search" color="primary" debounce="300" dense
-               label="搜索" outlined
-               rounded
-               @update:model-value="getTableRows()">
-        <template v-slot:prepend>
-          <q-icon dense flat name="search"/>
-        </template>
-        <template v-slot:append>
-          <q-btn :style="{visibility:filter?'visible':'hidden'}" dense flat icon="clear" @click="filter=''"/>
-        </template>
-      </q-input>
-    </div>
-    <q-card v-if="fullFilterControl.status" class="q-mb-md bg-grey-11">
-      <q-card-section>
-        <q-card>
-          <q-card-section>
-            <div class="text-h6">
-              内部信息
-            </div>
-            <div class="q-gutter-sm row">
-              <q-input v-model="fullFilterControl.userId" clearable dense label="用户id" outlined/>
-              <q-btn-toggle v-model="fullFilterControl.readStatus"
-                            :options="[{label: '全部', value: null},{label: '客户', value: 0},{label: 'VIP', value: 1},{label: '机密', value: 2}]"
-                            push toggle-color="primary"/>
-              <q-input v-model="fullFilterControl.character" clearable dense label="性格特点" outlined/>
-            </div>
-          </q-card-section>
-        </q-card>
-      </q-card-section>
-      <q-card-section>
-        <q-card>
-          <q-card-section>
-            <div class="text-h6">
-              身份证信息
-            </div>
-            <div class="q-gutter-sm row">
-              <q-input v-model="fullFilterControl.userId" clearable dense label="姓名" outlined/>
-              <q-btn-toggle v-model="fullFilterControl.readStatus"
-                            :options="[{label: '全部', value: null},{label: '男', value: false},{label: '女', value: true}]"
-                            push toggle-color="primary"/>
-              <q-input v-model="fullFilterControl.character" clearable dense label="民族" outlined/>
-              <q-input v-model="fullFilterControl.character" clearable dense label="号码" outlined/>
-              <q-input v-model="fullFilterControl.character" clearable dense label="出生年月日" outlined/>
-              <q-input v-model="fullFilterControl.character" clearable dense label="住址" outlined/>
-            </div>
-          </q-card-section>
-        </q-card>
-      </q-card-section>
-      <q-card-section>
-        <q-card>
-          <q-card-section>
-            <div class="text-h6">
-              联系方式信息
-            </div>
-            <div class="q-gutter-sm row">
-              <q-btn-toggle v-model="fullFilterControl.readStatus"
-                            :options="[{label: '全部', value: null},{label: 'QQ', value: 0},{label: '微信', value: 1},{label: '手机号', value: 2}]"
-                            push toggle-color="primary"/>
-              <q-input v-model="fullFilterControl.character" clearable dense label="内容" outlined/>
-              <q-input v-model="fullFilterControl.character" clearable dense label="备注" outlined/>
-            </div>
-          </q-card-section>
-        </q-card>
-      </q-card-section>
-      <q-card-actions>
-        <q-btn color="primary" label="搜索" @click="getTableRows()"/>
-      </q-card-actions>
-    </q-card>
+    <table-control>
+    </table-control>
     <q-table
         class="q-mt-sm"
       v-model:pagination="pagination"

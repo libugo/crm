@@ -2,6 +2,7 @@
 
 import {reactive, ref} from "vue";
 import {useQuasar} from "quasar";
+import TableControl from "components/TableControl.vue";
 
 const $q = useQuasar()
 
@@ -36,30 +37,8 @@ let tableMainDialog = reactive({
 
 <template>
   <q-page class="customer-page normal-page">
-    <div class="table-header q-mb-md row items-center">
-      <div class="col q-gutter-sm">
-        <q-icon color="primary" name="follow_the_signs" size="md"/>
-        <q-btn color="primary" icon-right="add" label="新增" @click="addLeadInfo"/>
-        <q-btn v-if="selected.length>0" color="negative" icon-right="delete_forever" label="删除所选"
-               @click="delSelectedRow"/>
-      </div>
-      <div class="col-auto text-right">
-        <div class="row items-center q-gutter-md">
-          <q-btn color="primary" icon-right="sync" label="刷新" outline @click="getTableRows()"/>
-          <q-input v-model="filter" color="primary" debounce="300" dense
-                   label="搜索" outlined
-                   rounded style="max-width: 300px"
-                   @update:model-value="searchLead">
-            <template v-slot:prepend>
-              <q-icon dense flat name="search"/>
-            </template>
-            <template v-slot:append>
-              <q-btn :style="{visibility:filter?'visible':'hidden'}" dense flat icon="clear" @click="filter=''"/>
-            </template>
-          </q-input>
-        </div>
-      </div>
-    </div>
+    <table-control>
+    </table-control>
     <q-table
       v-model:pagination="pagination"
       v-model:selected.sync="selected"

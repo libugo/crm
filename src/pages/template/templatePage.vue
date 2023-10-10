@@ -4,6 +4,7 @@ import {useQuasar} from "quasar";
 import TableControl from "components/TableControl.vue";
 
 const $q = useQuasar()
+
 let columns = [
     {name: 'index', label: '#', field: 'index'},
     {name: 'control', align: 'center', label: '控制', field: 'control'},
@@ -45,7 +46,6 @@ let tableMainDialog = reactive({
       :rows="rows"
       row-key="leadId"
       selection="multiple"
-      table-header-class="ad-table-header"
       @request="getTableRows">
       <template #body-cell-control="props">
         <q-td :auto-width="true" :props="props" class="q-gutter-xs">

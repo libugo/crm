@@ -11,7 +11,7 @@ const simpleSearchMode = ref(true),
     <div class="table-header q-mb-md row items-center">
       <div class="col q-gutter-sm">
         <q-icon color="primary" name="follow_the_signs" size="md"/>
-        <slot name="controlBtn"/>
+        <slot name="control-btn"/>
       </div>
       <div class="col-auto q-gutter-sm text-right">
         <q-btn color="primary" dense icon-right="sync" outline @click="$emit('getTableRows',true)">

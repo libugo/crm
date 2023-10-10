@@ -53,7 +53,6 @@ let tableMainDialog = reactive({
       :rows="rows"
       row-key="leadId"
       selection="multiple"
-      table-header-class="ad-table-header"
       @request="getTableRows">
       <template #body-cell-control="props">
         <q-td :auto-width="true" :props="props" class="q-gutter-xs">

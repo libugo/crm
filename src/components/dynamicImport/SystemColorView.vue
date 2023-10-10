@@ -22,6 +22,10 @@ function closeDialog() {
 function changeSystemColor(val) {
   systemStore.set(val)
 }
+
+function resetSystemColor() {
+  systemStore.reset()
+}
 </script>
 
 <template>
@@ -30,7 +34,9 @@ function changeSystemColor(val) {
       <dialog-bar v-touch-pan.prevent.mouse="moveFab"
                   class="cursor-pointer"
                   title="主题色设置"
-                  @closeDialog="closeDialog"/>
+                  @closeDialog="closeDialog">
+        <q-btn dense flat icon="restart_alt" @click="resetSystemColor"/>
+      </dialog-bar>
       <q-card-section>
         <q-color v-model="color" no-header @change="changeSystemColor"/>
       </q-card-section>

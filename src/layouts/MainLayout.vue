@@ -1,16 +1,24 @@
 <template>
   <q-layout view="hHh LpR lFf">
-    <q-header class="bg-white text-black" elevated reveal>
-      <q-toolbar>
-        <q-btn dense flat icon="menu" round @click="leftDrawerControl"/>
-        <q-input v-model="search" class="q-mr-sm" dense outlined>
+    <q-header class="header bg-white text-primary" elevated reveal>
+      <q-toolbar class="q-gutter-xs">
+        <q-btn :color="mainLeftDrawer?'primary':'white'" dense flat icon="menu" round @click="leftDrawerControl"/>
+        <q-input v-model="search" dense outlined>
           <template v-slot:append>
             <q-icon v-if="search === ''" name="search"/>
             <q-icon v-else class="cursor-pointer" name="clear" @click="search = ''"/>
           </template>
         </q-input>
         <q-space/>
-        <q-btn v-if="LoginUser.user==null" class="bg-red text-white" label="已离线" @click="needLogin()"/>
+        <q-btn :color="$q.dark.isActive?'primary':'black'"
+               :flat="!($q.dark.isActive)"
+               dense icon="nights_stay" round size="md"
+               @click="changeDark"/>
+        <q-btn v-if="LoginUser.user==null"
+               class="bg-red text-white"
+               dense
+               label="离线"
+               @click="needLogin()"/>
         <q-btn-dropdown v-else :label="LoginUser.user" color="primary" icon="account_circle" no-caps outline>
           <q-tabs vertical>
             <q-tab v-if="!LoginUser.adminLogin" v-close-popup @click="displayUserInfo">
@@ -52,7 +60,7 @@
 <script setup>
 
 import {useRouter} from "vue-router";
-import {useQuasar} from "quasar";
+import {date, useQuasar} from "quasar";
 import {useMenuOpenMapStore} from "stores/menu-open-map";
 import {nextTick, onBeforeMount, reactive, ref} from "vue";
 import {useLoginUserStore} from "stores/login-user-store";
@@ -141,9 +149,17 @@ function clearAliveCache() {
   })
 }
 
+function changeDark() {
+  $q.dark.toggle();
+  let datetime = new Date();
+  datetime = date.addToDate(datetime, {hour: 6});
+  LoginUser.updateDark($q.dark.isActive, datetime);
+}
+
 onBeforeMount(() => {
   const systemStore = useSystemSettingStoreStore()
   systemStore.updateSystemColor()
+  $q.dark.set(LoginUser.dark.status)
 })
 
 /*else if (LoginUser.role === 0) {
@@ -152,6 +168,11 @@ onBeforeMount(() => {
 initMenu()
 </script>
 <style lang="sass" scoped>
+@import "src/css/quasar.variables"
 .left-drawer-logo
   font-size: 1.3rem
+
+.body--dark
+  .header
+    background: $dark-page !important
 </style>

@@ -14,6 +14,9 @@ export const useSystemSettingStoreStore = defineStore("System_Setting", {
       this.primary = color
       setCssVar('primary', color)
     },
+    reset() {
+      this.set('#094bcbe8')
+    },
     updateSystemColor() {
       setCssVar('primary', this.primary)
     }

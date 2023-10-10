@@ -13,6 +13,7 @@
         </div>
       </div>
       <div class="col-auto cursor-pointer">
+        <slot/>
         <q-btn dense flat icon="close" @click="closeDialog"/>
       </div>
     </q-bar>

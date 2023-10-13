@@ -6,10 +6,7 @@ export const useLoginUserStore = defineStore("Login_User", {
     user: null,
     role: null,
     token: null,
-    dark: {
-      status: null,
-      expireTime: null
-    }
+      dark: false
   }),
 
   getters: {
@@ -36,9 +33,8 @@ export const useLoginUserStore = defineStore("Login_User", {
       api();
       this.role = null;
     },
-    updateDark(status, expireTime) {
-      this.dark.status = status;
-      this.dark.expireTime = expireTime;
+      updateDark(status) {
+          this.dark = status;
     }
   }
 });

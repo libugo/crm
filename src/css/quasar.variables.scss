@@ -28,3 +28,14 @@ $warning: #F2C037;
 //$main: #094bcbe8;
 $light-main-color: #4717f60d;
 $goldenrod: goldenrod;
+
+
+//表格加载进度条
+/*.q-table__progress .q-linear-progress {
+  color: $main !important;
+}*/
+
+//列表夜间模式默认颜色为primary
+.q-list--dark, .q-item--dark {
+  color: var(--q-primary);
+}

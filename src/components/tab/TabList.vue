@@ -3,6 +3,7 @@ import {useRouteTabListStore} from "stores/route-tab-list";
 import {useRouter} from "vue-router";
 import {scroll} from 'quasar'
 import {nextTick} from "vue";
+import {Home_Page_Name} from "src/config";
 
 const emit = defineEmits(['clearAllTab'])
 
@@ -43,18 +44,18 @@ routeTabListStore.$subscribe((mutation, state) => stillScrollRight())
         <q-btn-group v-for="item in routeTabListStore.list" :key="item.id"
                  class="tab-btn-group q-mr-xs" outline>
           <q-btn :color="$route.fullPath===item.path?'primary':'grey'" :label="item.title" :to="item.path" outline/>
-          <q-btn v-if="item.name!=='home'" :color="$route.fullPath===item.path?'primary':'grey'"
+          <q-btn v-if="item.name!==Home_Page_Name" :color="$route.fullPath===item.path?'primary':'grey'"
              dense icon="close" outline size="sm"
              @click="routeTabClose(item.id)"/>
-      <q-tooltip v-if="item.name!=='home'" :offset="[10, 10]" anchor="top middle" self="bottom middle">
+          <q-tooltip v-if="item.name!==Home_Page_Name" :offset="[10, 10]" anchor="top middle" self="bottom middle">
         {{ item.datetime }}
       </q-tooltip>
       <q-popup-proxy context-menu>
         <q-list v-close-popup>
-          <q-item v-if="$route.name!=='home' && $route.fullPath===item.path" v-ripple clickable>
+          <q-item v-if="$route.name!==Home_Page_Name && $route.fullPath===item.path" v-ripple clickable>
             <q-item-section @click="flushPage(item.name,item.id)">重载页面</q-item-section>
           </q-item>
-          <q-item v-if="$route.name!=='home' && $route.fullPath===item.path" v-ripple clickable>
+          <q-item v-if="$route.name!==Home_Page_Name && $route.fullPath===item.path" v-ripple clickable>
             <q-item-section @click="clearTabByName(item.name,item.id)">关闭重复</q-item-section>
           </q-item>
           <q-item v-ripple clickable>

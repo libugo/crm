@@ -74,7 +74,7 @@ function downOrder(businessId) {
       :filter="filter"
       :loading="loading"
       :rows="rows"
-      row-key="leadId"
+      row-key="businessId"
       selection="multiple"
       @request="getTableRows">
       <template #body-cell-order="props">

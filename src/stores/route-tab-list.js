@@ -3,11 +3,12 @@ import {Router} from "src/router";
 import {getNowTime} from "src/util";
 import {nanoid} from "nanoid";
 import {Notify} from "quasar";
+import {Home_Page_Name} from "src/config";
 
 export const useRouteTabListStore = defineStore("routeTabList", {
   persist: true,
   state: () => ({
-    list: [{id: 'home', name: "home", title: "工作台", path: "/"}]
+      list: [{id: Home_Page_Name, name: Home_Page_Name, title: "工作台", path: "/"}]
   }),
 
   getters: {},
@@ -24,7 +25,7 @@ export const useRouteTabListStore = defineStore("routeTabList", {
       return id
     },
     addTab(name, title, path) {
-      if (name === 'home') {
+        if (name === Home_Page_Name) {
         Router.push(path)
         return
       }

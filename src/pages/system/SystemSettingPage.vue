@@ -13,6 +13,11 @@ function displaySystemColorView() {
   dialogList.value.addDialog('systemColor',
     'SystemColorView', null)
 }
+
+function clearCache() {
+    localStorage.clear()
+    location.reload()
+}
 </script>
 
 <template>
@@ -31,10 +36,11 @@ function displaySystemColorView() {
     </q-card>
     <q-card>
       <q-card-section>
-        <div class="text-h6">主题配色</div>
+          <div class="text-h6">系统设置</div>
       </q-card-section>
       <q-separator/>
       <q-card-section class="q-gutter-md">
+          <q-btn label="清除本地缓存" @click="clearCache"/>
         <q-btn label="主题色设置" @click="displaySystemColorView"/>
       </q-card-section>
     </q-card>

@@ -23,12 +23,18 @@
         <q-expansion-item v-else
                           :key="item"
                           :content-inset-level="props.indentLevel"
-                          :default-opened="item.meta.open"
-                          :duration="300"
+                          :default-opened="menuOpenMap.openMap[item.name]"
+                          :duration="100"
                           :header-inset-level="props.indentLevel"
                           :icon="item.meta.icon"
                           :label="item.meta.title"
-                          class="text-grey-8"
+                          :header-class="{
+                            'text-grey-8':
+                            !(
+                              item.children.map(x=>x.path)
+                              .includes($route.path)
+                              )
+                          }"
                           expand-icon="chevron_left"
                           expanded-icon="expand_more"
                           @hide="closeMenu(item.name)"
@@ -57,7 +63,6 @@
 import {useMenuOpenMapStore} from "stores/menu-open-map";
 import {goRouteItem, switchTabByName} from "src/util";
 
-
 const props = defineProps({
   indentLevel: Number,
   itemList: Object,
@@ -66,11 +71,11 @@ const props = defineProps({
 
 const menuOpenMap = useMenuOpenMapStore();
 function openMenu(name) {
-  menuOpenMap.put(name, true);
+    menuOpenMap.putOpenMap(name, true);
 }
 
 function closeMenu(name) {
-  menuOpenMap.put(name, false);
+    menuOpenMap.putOpenMap(name, false);
 }
 
 </script>

@@ -2,7 +2,8 @@
   <q-layout view="hHh LpR lFf">
     <q-header class="header bg-white text-primary" elevated reveal>
       <q-toolbar class="q-gutter-xs">
-        <q-btn :color="mainLeftDrawer?'primary':'white'" dense flat icon="menu" round @click="leftDrawerControl"/>
+          <q-btn :color="mainLeftDrawer?'primary':($q.dark.isActive?'white':'black')" dense flat icon="menu" round
+                 @click="leftDrawerControl"/>
         <q-input v-model="search" dense outlined>
           <template v-slot:append>
             <q-icon v-if="search === ''" name="search"/>
@@ -60,7 +61,7 @@
 <script setup>
 
 import {useRouter} from "vue-router";
-import {date, useQuasar} from "quasar";
+import {useQuasar} from "quasar";
 import {useMenuOpenMapStore} from "stores/menu-open-map";
 import {nextTick, onBeforeMount, reactive, ref} from "vue";
 import {useLoginUserStore} from "stores/login-user-store";
@@ -73,7 +74,7 @@ const $q = useQuasar();
 const router = useRouter();
 
 const menuOpenMapStore = useMenuOpenMapStore();
-const mainLeftDrawer = ref(menuOpenMapStore.statusMap.mainLeftDrawer);
+const mainLeftDrawer = ref(menuOpenMapStore.mainLeftDrawer);
 
 const LoginUser = useLoginUserStore();
 /*const balance = ref();*/
@@ -125,7 +126,7 @@ function closeLoginPage() {
 
 function leftDrawerControl() {
   mainLeftDrawer.value = !mainLeftDrawer.value;
-  menuOpenMapStore.put("mainLeftDrawer", mainLeftDrawer.value);
+    menuOpenMapStore.mainLeftDrawer = mainLeftDrawer.value;
 }
 
 function logOut() {
@@ -135,10 +136,6 @@ function logOut() {
 function displayUserInfo() {
   // mainDialog.content=markRaw(UserInfo)
   mainDialog.display = true
-}
-
-function initMenu() {
-  menuOpenMapStore.put("mainLeftDrawer", !($q.platform.is.mobile))
 }
 
 function clearAliveCache() {
@@ -151,21 +148,21 @@ function clearAliveCache() {
 
 function changeDark() {
   $q.dark.toggle();
-  let datetime = new Date();
-  datetime = date.addToDate(datetime, {hour: 6});
-  LoginUser.updateDark($q.dark.isActive, datetime);
+    LoginUser.updateDark($q.dark.isActive);
+}
+
+function init() {
+    menuOpenMapStore.mainLeftDrawer = !($q.platform.is.mobile)
+
+    $q.dark.set(LoginUser.dark)
+
+    const systemStore = useSystemSettingStoreStore()
+    systemStore.updateSystemColor()
 }
 
 onBeforeMount(() => {
-  const systemStore = useSystemSettingStoreStore()
-  systemStore.updateSystemColor()
-  $q.dark.set(LoginUser.dark.status)
+    init()
 })
-
-/*else if (LoginUser.role === 0) {
-  getUserBalance();
-}*/
-initMenu()
 </script>
 <style lang="sass" scoped>
 @import "src/css/quasar.variables"
